@@ -1,0 +1,88 @@
+---
+title: "conditional_probability_workshop"
+format: html
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Loaded data
+
+```{r}
+stoke_data <- read.csv("data/healthcare.csv")
+```
+
+4 Visualizations
+
+```{r}
+library(ggplot2)
+library(tidyverse)
+```
+
+```{r}
+ggplot(data = stoke_data, aes(x = stroke, fill = factor(hypertension))) +
+  geom_bar(position = 'dodge')　+
+  theme_bw()
+```
+
+```{r}
+ggplot(data = stoke_data, aes(x = factor(stroke), fill = factor(stroke), y = avg_glucose_level)) +
+  geom_boxplot()
+```
+
+```{r}
+ggplot(data = stoke_data, aes(x = heart_disease, fill = factor(gender))) +
+  geom_bar(position = 'dodge')　+
+  theme_bw()
+```
+
+P(A) : Probability of Heartdisease
+
+```{r}
+probability_of_heart_disease <- data |> 
+  count(heart_disease) |> 
+  mutate(percent = n / sum(n)) |> 
+  filter(heart_disease == 1) |> 
+  pull(percent)
+
+# 0.054
+```
+
+P(B) : Probability of stroke
+
+```{r}
+probability_of_stroke <- data %>% 
+  count(stroke) %>% 
+  mutate(percent = n / sum(n)) %>% 
+  filter(stroke == 1) %>% 
+  pull(percent)
+
+# 0.048
+```
+
+P(A\|B)
+
+```{r}
+probability_of_positive_result_given_heartdisease <- 
+```
+
+```{r}
+data |>  
+  ggplot(aes(x = gender, fill = heart_disease)) +
+  geom_bar(position = "dodge") +
+  labs(
+    title = "Stroke Count by Heart Disease",
+    x = "Gender", y = "Number of Patients", fill = "Stroke Status"
+  )
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
