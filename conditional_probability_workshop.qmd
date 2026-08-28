@@ -11,7 +11,7 @@ Quarto enables you to weave together content and executable code into a finished
 ## Loaded data
 
 ```{r}
-stoke_data <- read.csv("data/healthcare.csv")
+stroke_data <- read.csv("data/healthcare.csv")
 ```
 
 4 Visualizations
@@ -22,18 +22,18 @@ library(tidyverse)
 ```
 
 ```{r}
-ggplot(data = stoke_data, aes(x = stroke, fill = factor(hypertension))) +
+ggplot(data = stroke_data, aes(x = stroke, fill = factor(hypertension))) +
   geom_bar(position = 'dodge')　+
   theme_bw()
 ```
 
 ```{r}
-ggplot(data = stoke_data, aes(x = factor(stroke), fill = factor(stroke), y = avg_glucose_level)) +
+ggplot(data = stroke_data, aes(x = factor(stroke), fill = factor(stroke), y = avg_glucose_level)) +
   geom_boxplot()
 ```
 
 ```{r}
-ggplot(data = stoke_data, aes(x = heart_disease, fill = factor(gender))) +
+ggplot(data = stroke_data, aes(x = heart_disease, fill = factor(gender))) +
   geom_bar(position = 'dodge')　+
   theme_bw()
 ```
@@ -41,7 +41,7 @@ ggplot(data = stoke_data, aes(x = heart_disease, fill = factor(gender))) +
 P(A) : Probability of Heartdisease
 
 ```{r}
-probability_of_heart_disease <- data |> 
+probability_of_heart_disease <- stroke_data |> 
   count(heart_disease) |> 
   mutate(percent = n / sum(n)) |> 
   filter(heart_disease == 1) |> 
@@ -53,7 +53,7 @@ probability_of_heart_disease <- data |>
 P(B) : Probability of stroke
 
 ```{r}
-probability_of_stroke <- data %>% 
+probability_of_stroke <- stroke_data %>% 
   count(stroke) %>% 
   mutate(percent = n / sum(n)) %>% 
   filter(stroke == 1) %>% 
@@ -65,16 +65,27 @@ probability_of_stroke <- data %>%
 P(A\|B)
 
 ```{r}
-probability_of_positive_result_given_heartdisease <- 
+probability_of_positive_result_given_stroke <- stroke_data |> 
+  count(stroke, heart_disease) |> 
+  group_by(stroke) |> 
+  mutate(percent = n /sum(n)) |> 
+  filter(stroke == 1, heart_disease == 1) |> 
+  pull(percent)
+```
+
+P(B\|A)
+
+```{r}
+(probability_of_positive_result_given_stroke * probability_of_stroke) / probability_of_heart_disease
 ```
 
 ```{r}
 data |>  
-  ggplot(aes(x = gender, fill = heart_disease)) +
+  ggplot(aes(x = stroke, fill = factor(heart_disease))) +
   geom_bar(position = "dodge") +
   labs(
     title = "Stroke Count by Heart Disease",
-    x = "Gender", y = "Number of Patients", fill = "Stroke Status"
+    x = "stoke", y = "Number of Patients", fill = "Heart Disease"
   )
 ```
 
