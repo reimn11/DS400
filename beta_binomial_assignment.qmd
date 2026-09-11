@@ -31,7 +31,7 @@ Statement = "Before any new poll, we believe there's a 95% chance Michelle's tru
 
 Prior effective sample size = 100 pseudo voters
 
-### Likelihood  
+### Likelihood
 
 **New data arrives:** We commission a new poll of *n* Minnesotans and record *y* , the number who support Michelle. We poll 50 voters in which 30 (60%) supported her -- noticeably higher than her 45% prior average.
 
@@ -79,7 +79,7 @@ Things to keep on mind:
 
 ### Prior
 
-Set the scene...
+Rainy Days in Honolulu
 
 define π
 
@@ -87,9 +87,9 @@ define π
 plot_beta(alpha = 20, beta = 30)
 ```
 
-Statement = "Before any new data we believe there's a 95% chance π is between 25% and 55%, with 35% as our single best guess."
+Statement = "Before any new data we believe there's a 95% chance π is between 27% and 54%, with 40% as our single best guess."
 
-Prior effective sample size = 30 days
+Prior effective sample size = 50 days
 
 ### Likelihood
 
@@ -101,7 +101,7 @@ plot_binomial_likelihood(y = 4, n = 30)
 
 Likelihood Question: "For each possible value of π —.... — how compatible is that value with having produced exactly 4 out of 30 in this data collection?"
 
-Likelihood Statement: "Taken on its own, this data makes values of π near 13% far more plausible than values near 55% — the data alone points to a higher/lower number than we'd been expecting"
+Likelihood Statement: "Taken on its own, this data makes values of π near 13% far more plausible than values near 40% — the data alone points to a lower number than we'd been expecting"
 
 ### Posterior
 
@@ -112,3 +112,7 @@ plot_beta_binomial(alpha = 20, beta = 30, y = 4, n = 30)
 Statement = "There's a 95% probability that π lies between 20.5% and 40.4%."
 
 Weight = prior (worth \~ 50 days) contributes 62% of the weight, and our new data (n = 30) contributes the other 38%.
+
+### limitations
+
+**Only one location.** If π is for specific one location that will be limitaition. Rain on Oʻahu varies a lot by area, so this is not an island-wide number.
