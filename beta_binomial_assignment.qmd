@@ -79,17 +79,33 @@ Things to keep on mind:
 
 ### Prior
 
-Rainy Days in Honolulu
+Rainy Days in Honolulu in September
 
 define π
 
+## prior from NOAA counts
+
 ```{r}
-plot_beta(alpha = 20, beta = 30)
+y_hist = 96      # rainy days in 10 past Septembers
+n_hist = 300     # total days
+k      = 1/2     # discount factor, sived by two because the app doens't                        allow over 250 asdfrbvedrqbv
 ```
 
-Statement = "Before any new data we believe there's a 95% chance π is between 27% and 54%, with 40% as our single best guess."
+α = k × y_hist = 48 \<- rainy days ( the success - match π)
 
-Prior effective sample size = 50 days
+β = k × (n_hist − y_hist) = 102 \<- dry days (the failure)
+
+y = 4
+
+n = 30
+
+```{r}
+plot_beta(alpha = 48, beta = 102)
+```
+
+Statement = "Before any new data we believe there's a 95% chance π is between 25% and 40%, with 32% as our single best guess."
+
+Prior effective sample size = 150 days
 
 ### Likelihood
 
@@ -106,12 +122,12 @@ Likelihood Statement: "Taken on its own, this data makes values of π near 13% f
 ### Posterior
 
 ```{r}
-plot_beta_binomial(alpha = 20, beta = 30, y = 4, n = 30)
+plot_beta_binomial(alpha = 48, beta = 102, y = 4, n = 30) 
 ```
 
-Statement = "There's a 95% probability that π lies between 20.5% and 40.4%."
+Statement = "There's a 95% probability that π lies between 22.5% and 35.7%."
 
-Weight = prior (worth \~ 50 days) contributes 62% of the weight, and our new data (n = 30) contributes the other 38%.
+Weight = prior (worth \~ 150 days) contributes 83% of the weight, and our new data (n = 30) contributes the other 17%.
 
 ### limitations
 
