@@ -32,7 +32,7 @@
 ## shape. Report alpha, beta, the resulting mean, and the 95% credible
 ## interval.
 ##
-## Your answer:
+## Your answer: 
 ##
 ##
 ## ------------------------------------------------------------
