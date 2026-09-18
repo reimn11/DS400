@@ -636,15 +636,17 @@ shinyApp(ui, server)
 
 ### Questions
 
-1\.
+1\. 100 +/- 1.96\*40 = 100+/- 78.4 -\> **21.6, 178.4**
 
-2\.
+Before seeing data, we believe each extra degree adds between about 22 and 178 riders.
 
-3\.
-
-4\.
-
-5\.
+2.  The lines fan out more because a bigger s1 means we're less sure about the slope, so the guessed slopes vary much more.
+3.  Set l (sigma's rate) to 0.002, then to 0.0003. Compare the two sigma prior plots. Which one reflects a stronger belief that ridership is tightly predicted by temperature alone?
+    - 0.0002 gives about 500 rides and 0.0003 gives about 3333 rides. 1 = 0.002 is stronger belief that it expects only smll scatter around the line.
+4.  The sigma prior plot peaks at 0, not in the middle like the beta0c and beta1 plots. Why? (Hint: what values is sigma even allowed to take?)
+    - I think Sigma is a standard deviation, so it can't be nagative, that's why sigma peaks 0. beta0c and beta1 can be any number.
+5.  Reset to the book's default priors and fit the posterior. Report the posterior median for the Intercept and for temp_feel. How closely do they match the textbook's own values (-2194.24 and 82.16)? Given how large n = 500 is relative to this prior's strength, is that closeness surprising, or exactly what you'd expect? Explain using the weight-of-evidence idea.
+    - It was very close the textbook(-2197.24, 82.20). I could expect this result becasue the data carry much weight than fairly vaugue priors.
 
 6\.
 
