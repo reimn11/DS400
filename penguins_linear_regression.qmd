@@ -1,0 +1,84 @@
+---
+title: "Untitled"
+format: html
+editor: visual
+---
+
+# **Challenge: Modeling Penguin Flipper Length with Bayesian Regression**
+
+You're going to build a Bayesian Normal regression model predicting flipper length (`flipper_length_mm`) from bill length (`bill_length_mm`), using the `penguins_bayes` dataset. Work through each section in order, and answer every numbered question directly in your qmd, right under the code that produces it.
+
+### Package and Data
+
+```{r}
+options(scipen = 99) # shoe p value like 0.00000022
+library(tidyverse)
+library(bayesrules)
+library(rstanarm)
+library(ggpubr) # stat_cor()
+library(ggExtra)
+library(report)
+
+#install.packages('ggExtra')
+data <- bayesrules::penguins_bayes
+```
+
+A histogram of `flipper_length_mm`
+
+```{r}
+ggplot(data = data, aes(x = flipper_length_mm)) +
+  geom_histogram()
+
+```
+
+A scatterplot of `flipper_length_mm` (y) against `bill_length_mm` (x). Linear?
+
+```{r}
+ggplot(data = data, aes(x = bill_length_mm, y = flipper_length_mm)) +
+  geom_point() +
+  geom_smooth(method = 'lm') +
+  stat_cor()
+```
+
+```{r}
+p <- ggplot(penguins_bayes, aes(x = flipper_length_mm, y = bill_length_mm)) +
+  geom_point() +
+  theme_bw()
+
+ggMarginal(p, type = 'density')
+```
+
+**The bill-to-flipper relationship.** Bill length and flipp1.02er length are both rough proxies for body size, so for every 1mm increase in bill length, flipper length typically increases by around 3.5mm — with a plausible range of roughly 1.5mm to 5.5mm.
+
+```{r}
+m0 <- 200   # centered intercept mean
+s0 <- 10.2  # centered intercept SD
+m1 <- 3.5   # slope mean
+s1 <- 1.02   # slope SD
+l  <- 0.08   # sigma's exponential rate
+```
+
+## Feed into the model
+
+```{r}
+model <- stan_glm(
+  flipper_length_mm ~ bill_length_mm, data = data,
+  family = gaussian,
+  prior_intercept = normal(m0, s0),
+  prior = normal(m1, s1),
+  prior_aux = exponential(l),
+  chains = 4, iter = 2000, seed = 84735
+)
+```
+
+```{r}
+summary(model)
+```
+
+```{r}
+report::report(model)
+```
+
+I found that a Bayesian linear model can be used in the medical field for clinical trials involving rare diseases with extremely limited patient numbers. This analysis incorporates prior information such as historical drug data, physician expertise, and animal testing results. This approach provides a practical estimation of a new drug's efficacy probability even when patient data is not enough.
+
+<https://www.appliedclinicaltrialsonline.com/view/bayesian-approaches-revolutionize-rare-disease-clinical-trials>
