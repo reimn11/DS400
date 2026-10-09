@@ -63,29 +63,57 @@ weather %>%
 Only use humidity at 9 am as a predictive feature and evaluate performance. Call it nb_class_model
 
 ```{r}
+nb_class_model <- naiveBayes(raintomorrow ~ humidity9am, data = weather)
 
 ```
 
 ```{r}
-#nb_class_model
+nb_class_model
 ```
+
+,1 -\> mean
+
+,2 -\> sd
 
 ```{r}
+weather <- weather %>% 
+  mutate(predicted_rain = predict(nb_class_model, newdata = .))
 
+
+weather %>% 
+  tabyl(raintomorrow, predicted_rain) %>% 
+  adorn_percentages("row") %>% 
+  adorn_pct_formatting(digits = 2) %>%
+  adorn_ns
 ```
+
+\
 
 Fit a naive bayes classification model with all the available data as features and evaluate performance. Call it nb_class_model_all
 
 ```{r}
-
+weather <- weather |> 
+  select(-predicted_rain)
 ```
 
 ```{r}
-
+nb_class_model_all <- naiveBayes(raintomorrow ~ ., data = weather)
 ```
 
 ```{r}
+nb_class_model_all
+```
 
+```{r}
+weather <- weather %>% 
+  mutate(predicted_rain = predict(nb_class_model_all, newdata = .))
+
+
+weather %>% 
+  tabyl(raintomorrow, predicted_rain) %>% 
+  adorn_percentages("row") %>% 
+  adorn_pct_formatting(digits = 2) %>%
+  adorn_ns
 ```
 
 ```{r}
@@ -99,6 +127,8 @@ Fit a naive bayes classification model with all the available data as features a
 ### Logistic Regression
 
 #### Frequentist approach
+
+glm -\> generate line model
 
 ```{r}
 rain_glm <- glm(raintomorrow ~ humidity9am, data = weather, family = binomial)
