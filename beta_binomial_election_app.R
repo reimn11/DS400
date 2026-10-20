@@ -32,7 +32,8 @@
 ## shape. Report alpha, beta, the resulting mean, and the 95% credible
 ## interval.
 ##
-## Your answer: 
+## Your answer: Use α = 225, β = 150. The mean is 225/375 = 0.60, the SD is about 0.025, and the 95% credible interval is about [0.551, 0.650]. That puts roughly 95% of the belief between 55% and 65%.
+## If the app’s sliders don’t go that high, Beta(180, 120) is a looser version with the same shape. Its mean is still 0.60, but the interval is about [0.544, 0.655].
 ##
 ##
 ## ------------------------------------------------------------
@@ -42,8 +43,8 @@
 ## happens to the width of the 95% credible interval? In one sentence,
 ## explain why the mean doesn't move but the interval does.
 ##
-## Your answer:
-##
+## Your answer: The mean stays at 0.45. The 95% CI shrinks from [0.354, 0.548] (width ≈ 0.194) to [0.402, 0.499] (width ≈ 0.097), so it is cut roughly in half.
+## The mean depends only on the ratio α/(α+β), which is unchanged, while α+β acts like a “prior sample size.”
 ##
 ## ------------------------------------------------------------
 ## Q3 (Tab 1) -- Set alpha = beta = 1 (the flat prior). What are the
@@ -53,8 +54,12 @@
 ## point more plausible than any other?) versus why Beta(0.5, 0.5) has
 ## no single mode (hint: where does the density pile up?).
 ##
-## Your answer:
-##
+## Your answer: 
+
+## For Beta(1,1), the mean is 0.5, there is no single mode, and the SD is ≈ 0.289.
+## For Beta(0.5, 0.5), the mean is also 0.5 and the SD is ≈ 0.354.
+## Beta(1,1) has no single mode because it is perfectly flat. Every value from 0 to 1 is equally plausible, so no point stands out above any other.
+## Beta(0.5, 0.5) has no single mode for the opposite reason. It is U-shaped, with density shooting up toward both 0 and 1. The belief piles up at the two extremes, so there are two competing “peaks” at the boundaries instead of one in the middle.
 ##
 ## ------------------------------------------------------------
 ## Q4 (Tab 2) -- Set alpha = beta = 1, then n = 50, y = 30. Compare the
@@ -62,7 +67,8 @@
 ## Explain why this happens in terms of what a flat prior represents.
 ##
 ## Your answer:
-##
+## The posterior, Beta(31, 21) with mean aounrd 0.596, lies exactly on top of the scaled likelihood curve. A flat prior says every support level is equally plausible beforehand, so it adds no information of its own. 
+# The posterior is then just the likelihood rescaled, and the data fully determine its shape.
 ##
 ## ------------------------------------------------------------
 ## Q5 (Tab 2) -- Reset to the text's numbers (alpha=45, beta=55, n=50,
@@ -71,9 +77,10 @@
 ## shift? What does this tell you about what it takes for new data to
 ## overrule a moderately confident prior?
 ##
-## Your answer:
-##
-##
+## Your answer: With n = 50 and y = 30, the posterior is Beta(75, 75) with mean 0.50. The weights are prior ≈ 2/3 (100/150), data ≈ 1/3 (50/150).
+## With n = 500 and y = 300, the posterior is Beta(345, 255) with mean ≈ 0.575. The weights shift to prior ≈ 1/6 (100/600), data ≈ 5/6 (500/600).
+## The prior acts like 100 earlier respondents. For the data to dominate, the new sample has to be several times larger than that prior “sample size.” A poll of 50 can’t overrule it, but a poll of 500 mostly does.
+
 ## ------------------------------------------------------------
 ## Q6 (Tab 2) -- Using the text's numbers (alpha=45, beta=55, n=50,
 ## y=30), check "Show frequentist 95% confidence interval." Compare the
@@ -81,9 +88,12 @@
 ## Bayesian credible interval says that the frequentist confidence
 ## interval cannot -- and why.
 ##
-## Your answer:
-##
-##
+## Your answer: The Bayesian 95% credible interval is about [0.420, 0.580], and the frequentist 95% CI is about [0.464, 0.736].
+## The frequentist interval is centered on the raw 60% and ignores the prior.
+## The credible interval lets you say directly that there is a 95% probability Michelle’s true support lies between 42% and 58%.
+## The frequentist interval can’t say that, becase it treats the true support as a fixed unknown constant rather than a randon quantity.
+## Its “95%” describes the long-run behavior of the method over repeated samples, not this particular interval.
+
 ## ------------------------------------------------------------
 ## Q7 (Tab 2) -- Set alpha = 90, beta = 10 (strong prior belief support
 ## is ~90%). Now set n = 200, y = 40 (20% support in the new poll -- a
@@ -92,8 +102,10 @@
 ## weight sentence? Why did the data win here when it didn't in Q5?
 ##
 ## Your answer:
-##
-##
+##The posterior is Beta(130, 170) with mean ≈ 0.433. That is much closer to the data (0.20) than to the prior (0.90).
+# This matches the weight sentence: prior = 100/300 ≈ 1/3, data = 200/300 ≈ 2/3, and 0.9 × 1/3 + 0.2 × 2/3 ≈ 0.433.
+## Data won here because n = 200 is twice the prior’s effective sample size of 100. In Q5’s first setup, n = 50 was only half of it. What matters is the relative “sample size,” not how dramatic the disagreement is.
+
 ## ------------------------------------------------------------
 ## Q8 (Reflection -- no fixed answer) -- The app's posterior treats
 ## every respondent in the poll equally, regardless of when the
@@ -105,8 +117,9 @@
 ## noisily varying around a fixed number.
 ##
 ## Your answer:
-##
-##
+##Q5 and Q7 show the posterior is just a sample-size-weighted average, so a months-old prior still counts as 100 “respondents” just as much as today’s poll does.
+## If support is genuinely trending upward, old information would keep dragging the estimate backward. The model would lag behind real change, and could look badly wrong as it did in Q7 if the drift is large.
+## Instead, I’d want the model to discount older information. Options include down-weighting or “forgetting” the prior over time (for example, shrinking α and β before each new poll)
 ## ============================================================
 
 

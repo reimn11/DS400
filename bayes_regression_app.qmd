@@ -641,19 +641,45 @@ shinyApp(ui, server)
 Before seeing data, we believe each extra degree adds between about 22 and 178 riders.
 
 2.  The lines fan out more because a bigger s1 means we're less sure about the slope, so the guessed slopes vary much more.
+
 3.  Set l (sigma's rate) to 0.002, then to 0.0003. Compare the two sigma prior plots. Which one reflects a stronger belief that ridership is tightly predicted by temperature alone?
+
     - 0.0002 gives about 500 rides and 0.0003 gives about 3333 rides. 1 = 0.002 is stronger belief that it expects only smll scatter around the line.
+
 4.  The sigma prior plot peaks at 0, not in the middle like the beta0c and beta1 plots. Why? (Hint: what values is sigma even allowed to take?)
+
     - I think Sigma is a standard deviation, so it can't be nagative, that's why sigma peaks 0. beta0c and beta1 can be any number.
+
 5.  Reset to the book's default priors and fit the posterior. Report the posterior median for the Intercept and for temp_feel. How closely do they match the textbook's own values (-2194.24 and 82.16)? Given how large n = 500 is relative to this prior's strength, is that closeness surprising, or exactly what you'd expect? Explain using the weight-of-evidence idea.
+
     - It was very close the textbook(-2197.24, 82.20). I could expect this result becasue the data carry much weight than fairly vaugue priors.
 
-6\.
+6.  What does "P(beta1 \> 0 \| data)" actually tell you, and why is this a genuine probability statement rather than a p-value?
 
-7\.
+    - It is the posterior probability that the slope is positive, meaning warmer days really do bring more riders, given the prior and the observed data. Here it should be essentially 1. It’s a genuine probability statement because in the Bayesian framework β₁ is treated as a random quantity with a posterior distribution, so you can ask directly how probable a hypothesis about it is. A p-value answers a different question. It is P(data this extreme or more \| β₁ = 0), a probability about the *data* assuming the hypothesis is true.
 
-8\.
+7.  Look at the MCMC diagnostics table (Rhat, n_eff). What would an Rhat far from 1 (say, 1.5) suggest about the chains?
 
-9\.
+    - An Rhat of about 1.5 means the chains disagree with each other. They haven’t converged to, or mixed across, the same distribution, so the different chains are exploring different regions. An n_eff much smaller than the actual number of draws signals high autocorrelation, so you have less independent information than it looks.
 
-10\.
+8.  Predict ridership at 75°F. Record both credible intervals shown: "typical ridership (mu)" and "one day's ridership (posterior predictive)." Which is wider, and why?
+
+    - At 75°F, typical ridership is −2194 + 82.16 × 75 = 3,968.
+
+      - **μ interval**: narrow, roughly ±100–150 around 3,968.
+
+      - P**osterior predictive interv**al: much wider, roughly \[1,450, 6,500\], which is about ±2σ.
+
+9.  Now predict at a much colder temperature, like 30°F. Does the posterior predictive interval's lower bound dip below zero? What limitation of using a Normal distribution for ridership does that reveal?
+
+    - At 30°F, μ ≈ −2194 + 82.16 × 30 ≈ 271. Subtracting about 2 × 1,280 gives a predictive lower bound around −2,200, so yes, it dips well below zero.
+
+    - limitation is A count model such as Poisson or negative binomial would respect the zero floor. The problem is also partly extrapolation, since 30°F is outside most of the observed temperatures.
+
+10. Suppose you set m0 to 50,000 instead of 5,000 (keeping everything else the same) and refit on the same 500 real days. Would the posterior median intercept end up close to 50,000, close to the original \~-2194, or somewhere in between? Explain using the "weight of evidence" idea -- compare the prior's implied confidence to the sample size of 500 real days.
+
+The intercept would end up close to the original \~−2194, nudged up only slightly.\
+
+The prior on the centered intercept is N(50,000, 1,000), which has the confidence of only a few “observations.” The data pin down average-day ridership to within about σ/√500 ≈ 1,280/22.4 ≈ 57 rides.\
+
+Precision-weighting the two sources gives the prior a weight of roughly (1/1000²) ÷ (1/1000² + 1/57²) ≈ 0.3%. Even though 50,000 is wildly wrong, it only pulls the estimate by about 0.003 × (50,000 − \~3,500) ≈ 150 rides. The 500 real days overwhelm it.
